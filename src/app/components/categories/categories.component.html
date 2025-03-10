@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header">
+                    Customers
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (item of categoryList; track $index) {
+                                <tr>
+                                    <td>{{$index+1}}</td>
+                                    <td (click)="LoadTasks(item)">{{item.name}}</td>
+                                    <td>{{item.description}}</td>
+                                    
+                                    <td>
+                                        <button class="btn btn-success" (click)="onEdit(item)">Edit</button>
+                                        <button class="btn btn-danger mx-1" (click)="onDelete(item.id)">delete</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    Create New Category
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="">Name</label>
+                            <input [(ngModel)]="categoryObj.name" type="text" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Email</label>
+                            <input [(ngModel)]="categoryObj.description" type="text" class="form-control">
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-secondary" (click)="onReset()">Reset</button>
+        
+                    @if (categoryObj.id === 0) {
+                        <button class="btn btn-success mx-2" (click)="onSaveCategory()">Save</button>
+                        }@else{
+                        <button class="btn btn-warning mx-2" (click)="onUpdate()">update</button>
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

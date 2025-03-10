@@ -1,0 +1,20 @@
+<div class="container mt-5">
+    <div class="bg"></div>
+    <form #form="ngForm" action="">
+        <h2 class="heading">Login Here</h2>
+
+        <label for="email">Email: </label>
+        <input [(ngModel)]="loginObj.email" #email="ngModel" name="email" required type="email">
+        <div class="text-danger">
+            @if (email.errors?.['required'] && email.touched && email.dirty) {
+                <span>This is required</span>
+            }
+        </div>
+
+        <label for="password">Password: </label>
+        <input [(ngModel)]="loginObj.password" #password="ngModel" name="password" type="password" required>
+
+        <button class="login-btn" [disabled]="form.invalid" (click)="onLogin()">Login</button>
+        <a class="register-btn" routerLink="/register">Don't have an account?</a>
+    </form>
+</div>
