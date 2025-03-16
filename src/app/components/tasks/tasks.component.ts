@@ -97,6 +97,14 @@ export class TasksComponent implements OnInit {
     this.taskobj = new Task()
   }
 
+  resetFilters(){
+    this.selectedCategoryId = null;
+    this.selectedStatus = null;
+    this.selectedDueDate = '';
+
+    this.getTasks()
+  }
+
 
   onSave() {
     this.taskService.createNewTask(this.taskobj, this.headers).subscribe((res: any) => {
