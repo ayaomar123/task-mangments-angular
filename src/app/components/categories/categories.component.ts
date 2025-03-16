@@ -39,6 +39,7 @@ export class CategoriesComponent {
 
   onSaveCategory() {
     this.categoryService.createNewCategory(this.categoryObj).subscribe((res: any) => {
+      //debugger;
       alert("Category created successfully");
       this.getCategories();
     })

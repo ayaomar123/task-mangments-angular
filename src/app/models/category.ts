@@ -12,7 +12,7 @@ export class Category{
 
 
 export interface ICategoryList{
-    id: number,
+    id: number |null,
     name: string,
     description: string,
 }
