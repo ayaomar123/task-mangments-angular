@@ -15,7 +15,10 @@ import { ITaskList, Task } from '../../models/tasks';
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css'
 })
-export class TasksComponent {
+export class TasksComponent implements OnInit {
+  selectedCategoryId: number | null = null;
+  selectedStatus: boolean | null = null;
+  selectedDueDate: string = '';
   categoriesList: Category[] = [];
 
   tasksList: Task[] = [];
@@ -28,15 +31,18 @@ export class TasksComponent {
     "priority": 1,
     "dueDate": null,
     "category": { id: null, name: '', description: '' },
-    "categoryId" : null
+    "categoryId": null
   }
 
 
   constructor(private taskService: TaskService) {
-    this.getCategories();
-    this.getTasks()
   }
 
+  ngOnInit() {
+    // Load all tasks initially (no filter)
+    this.getTasks();
+    this.getCategories()
+  }
 
 
 
@@ -67,6 +73,25 @@ export class TasksComponent {
 
     this.onReset();
   }
+
+  loadFilteredTasks() {
+    this.taskService.loadTasks(this.selectedCategoryId, this.selectedStatus,this.selectedDueDate, this.headers).subscribe(
+      (response: any) => {
+        this.tasksList = response; // Assuming response has a 'data' array
+      },
+      (error) => {
+        console.error('Error loading tasks:', error);
+      }
+    );
+  }
+
+  // Call this method when a filter changes (category or status)
+  onFilterChange() {
+    this.loadFilteredTasks();
+  }
+
+
+
 
   onReset() {
     this.taskobj = new Task()

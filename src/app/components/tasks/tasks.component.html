@@ -1,136 +1,166 @@
 <div class="container">
-    <div class="row mt-2">
-        <div class="col-xl-8 col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    Tasks
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered table-responsive">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Category</th>
-                                <th>Title</th>
-                                <th>description</th>
-                                <th>Status</th>
-                                <th>Pirioty</th>
-                                <th>Due Date</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (item of tasksList; track $index) {
-                            <tr>
-                                <td>{{$index+1}}</td>
-                                <td>{{item.category?.name}}</td>
-                                <td>{{item.title}}</td>
-                                <td>{{item.description}}</td>
-                                <td>
-                                    {{item.status |status }}
-                                </td>
-                                <td>{{item.priority|pirority }}</td>
-                                <td>{{item.dueDate | date }}</td>
-
-                                <td>
-                                    <button class="btn btn-success" (click)="onEdit(item)">Edit</button>
-                                    <button class="btn btn-danger mx-1" (click)="onDelete(item.id)">delete</button>
-                                </td>
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="row my-2">
+        <div class="col">
+            <label for="Category">Select Category</label>
+            <select class="form-select" [(ngModel)]="selectedCategoryId" (change)="onFilterChange()">
+                @for (item of categoriesList; track $index) {
+                <option [value]="item.id">{{item.name}}</option>
+                }
+            </select>
         </div>
 
-        <div class="col-xl-4 col-sm-12">
-            <div class="card">
-                <form #form="ngForm">
-                    <div class="card-header">
-                        Create New Task
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <label for="">Category Id</label>
-                                <select [(ngModel)]="taskobj.categoryId" #categoryId="ngModel" class="form-control" required
-                                    [ngModelOptions]="{standalone: true}" >
-                                    @for (item of categoriesList; track $index) {
-                                    <option [value]="item.id">{{item.name}}</option>
-                                    }
-                                </select>
+        <div class="col">
+            <label for="Status">Select Status</label>
+            <select class="form-select" [(ngModel)]="selectedStatus" (change)="onFilterChange()">
+                <option value="true">Completed</option>
+                <option value="false">Incomplete</option>
 
-                            
-                            </div>
-                            <div class="col-12">
-                                <label for="">Title</label>
-                                <input [(ngModel)]="taskobj.title" #title="ngModel" name="title" required type="text"
-                                    class="form-control">
-                                @if (title.errors?.['required'] && title.touched && title.dirty) {
-                                <span class="text-danger">This is required</span>
+            </select>
+        </div>
+
+        <div class="col">
+            <label for="">Due Date</label>
+            <input [(ngModel)]="selectedDueDate" type="date" class="form-control" (change)="onFilterChange()">
+        </div>
+
+        <div class="col">
+            <button class="btn btn-secondary" (click)="getTasks()">Reset date</button>
+        </div>
+
+    </div>
+</div>
+<div class="row mt-2">
+
+    <div class="col-xl-8 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                Tasks
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Category</th>
+                            <th>Title</th>
+                            <th>description</th>
+                            <th>Status</th>
+                            <th>Pirioty</th>
+                            <th>Due Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of tasksList; track $index) {
+                        <tr>
+                            <td>{{$index+1}}</td>
+                            <td>{{item.category?.name}}</td>
+                            <td>{{item.title}}</td>
+                            <td>{{item.description}}</td>
+                            <td>
+                                {{item.status |status }}
+                            </td>
+                            <td>{{item.priority|pirority }}</td>
+                            <td>{{item.dueDate | date }}</td>
+
+                            <td>
+                                <button class="btn btn-success" (click)="onEdit(item)">Edit</button>
+                                <button class="btn btn-danger mx-1" (click)="onDelete(item.id)">delete</button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-sm-12">
+        <div class="card">
+            <form #form="ngForm">
+                <div class="card-header">
+                    Create New Task
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="">Category Id</label>
+                            <select [(ngModel)]="taskobj.categoryId" #categoryId="ngModel" class="form-control" required
+                                [ngModelOptions]="{standalone: true}">
+                                @for (item of categoriesList; track $index) {
+                                <option [value]="item.id">{{item.name}}</option>
                                 }
-                            </div>
-                            <div class="col-12">
-                                <label for="">description</label>
-                                <input [(ngModel)]="taskobj.description" #description="ngModel" type="text"
-                                    name="description" required class="form-control">
-                                @if (description.errors?.['required'] && description.touched && description.dirty) {
-                                <span class="text-danger">This is required</span>
-                                }
-                            </div>
-
-                            <div class="col-12">
-                                <label for="status">Status</label>
-                                <select [(ngModel)]="taskobj.status" #status="ngModel" class="form-control"
-                                    name="status" required>
-                                    <option [ngValue]="true">True</option>
-                                    <option [ngValue]="false">False</option>
-                                </select>
-                                @if (status.errors?.['required'] && status.touched && status.dirty) {
-                                <span class="text-danger">This is required</span>
-                                }
-                            </div>
-
-
-
-                            <div class="col-12">
-                                <label for="">priority</label>
-
-                                <select [(ngModel)]="taskobj.priority" #priority="ngModel" class="form-control"
-                                    name="priority" required>
-                                    <option [ngValue]="3">High</option>
-                                    <option [ngValue]="2">Medium</option>
-                                    <option [ngValue]="1">Low</option>
-                                </select>
-                                @if (priority.errors?.['required'] && priority.touched && priority.dirty) {
-                                <span class="text-danger">This is required</span>
-                                }
-                            </div>
-
-                            <div class="col-12">
-                                <label for="">Due Date</label>
-                                <input [(ngModel)]="taskobj.dueDate" type="date" class="form-control" name="dueDate"
-                                    #dueDate="ngModel" required>
-                                @if (dueDate.errors?.['required'] && dueDate.touched && dueDate.dirty) {
-                                <span class="text-danger">This is required</span>
-                                }
-                            </div>
+                            </select>
 
 
                         </div>
-                    </div>
-                    <div class="card-footer">
+                        <div class="col-12">
+                            <label for="">Title</label>
+                            <input [(ngModel)]="taskobj.title" #title="ngModel" name="title" required type="text"
+                                class="form-control">
+                            @if (title.errors?.['required'] && title.touched && title.dirty) {
+                            <span class="text-danger">This is required</span>
+                            }
+                        </div>
+                        <div class="col-12">
+                            <label for="">description</label>
+                            <input [(ngModel)]="taskobj.description" #description="ngModel" type="text"
+                                name="description" required class="form-control">
+                            @if (description.errors?.['required'] && description.touched && description.dirty) {
+                            <span class="text-danger">This is required</span>
+                            }
+                        </div>
 
-                        <button class="btn btn-secondary" (click)="onReset()">Reset</button>
-                        @if (taskobj.id === 0) {
-                        <button class="btn btn-success mx-2" [disabled]="form.invalid" (click)="onSave()">Save</button>
-                        }@else{
-                        <button class="btn btn-warning mx-2" (click)="onUpdate()">update</button>
-                        }
+                        <div class="col-12">
+                            <label for="status">Status</label>
+                            <select [(ngModel)]="taskobj.status" #status="ngModel" class="form-control" name="status"
+                                required>
+                                <option [ngValue]="true">True</option>
+                                <option [ngValue]="false">False</option>
+                            </select>
+                            @if (status.errors?.['required'] && status.touched && status.dirty) {
+                            <span class="text-danger">This is required</span>
+                            }
+                        </div>
+
+
+
+                        <div class="col-12">
+                            <label for="">priority</label>
+
+                            <select [(ngModel)]="taskobj.priority" #priority="ngModel" class="form-control"
+                                name="priority" required>
+                                <option [ngValue]="3">High</option>
+                                <option [ngValue]="2">Medium</option>
+                                <option [ngValue]="1">Low</option>
+                            </select>
+                            @if (priority.errors?.['required'] && priority.touched && priority.dirty) {
+                            <span class="text-danger">This is required</span>
+                            }
+                        </div>
+
+                        <div class="col-12">
+                            <label for="">Due Date</label>
+                            <input [(ngModel)]="taskobj.dueDate" required type="date" class="form-control"
+                                name="dueDate" #dueDate="ngModel" required>
+                            @if (dueDate.errors?.['required'] && dueDate.touched && dueDate.dirty) {
+                            <span class="text-danger">This is required</span>
+                            }
+                        </div>
+
+
                     </div>
-                </form>
-            </div>
+                </div>
+                <div class="card-footer">
+
+                    <button class="btn btn-secondary" (click)="onReset()">Reset</button>
+                    @if (taskobj.id === 0) {
+                    <button class="btn btn-success mx-2" [disabled]="form.invalid" (click)="onSave()">Save</button>
+                    }@else{
+                    <button class="btn btn-warning mx-2" (click)="onUpdate()">update</button>
+                    }
+                </div>
+            </form>
         </div>
     </div>
 </div>
