@@ -79,7 +79,12 @@
             <div class="card">
                 <form #form="ngForm">
                     <div class="card-header">
-                        Create New Task
+                        @if (taskobj.id === 0) {
+                            Create New Task
+                            }@else{
+                                Update Task
+                            }
+                       
                     </div>
                     <div class="card-body">
                         <div class="row">

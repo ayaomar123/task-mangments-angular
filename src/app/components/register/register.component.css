@@ -57,3 +57,8 @@ input {font-size: 16px; display: block; width: 90%; border: none; border-bottom:
     .bg { display: none; }
     form { display: 100%; }
 }
+
+.login-btn:disabled{
+    background-color: gray;
+    cursor: no-drop;
+}

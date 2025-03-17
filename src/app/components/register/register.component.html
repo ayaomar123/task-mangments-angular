@@ -7,15 +7,18 @@
         <input [(ngModel)]="regObj.email" #email="ngModel" name="email" required type="email">
         <div class="text-danger">
             @if (email.errors?.['required'] && email.touched && email.dirty) {
-                <span>This is required</span>
+            <span>This is required</span>
             }
         </div>
 
         <label for="password">Password: </label>
         <input [(ngModel)]="regObj.password" #password="ngModel" name="password" type="password" required>
+        @if (passwordError != null) {
+        <span class="text-danger">{{passwordError}}</span>
+        }
 
         <button class="login-btn" [disabled]="form.invalid" (click)="onRegister()">Register</button>
         <a class="register-btn" routerLink="/login">have an account?</a>
     </form>
 </div>
-<router-outlet/>
+<router-outlet />

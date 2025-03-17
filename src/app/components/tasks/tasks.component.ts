@@ -109,7 +109,7 @@ export class TasksComponent implements OnInit {
   onSave() {
     this.taskService.createNewTask(this.taskobj, this.headers).subscribe((res: any) => {
       this.getTasks();
-    })
+    });
   }
 
   onEdit(task: any) {

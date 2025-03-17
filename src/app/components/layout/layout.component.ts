@@ -11,6 +11,7 @@ export class LayoutComponent {
   router = inject(Router);
   
   onLogout(){
+    const confirms = confirm('Are You Sure?');
     localStorage.removeItem("AngularUserToken");
     this.router.navigateByUrl('login');
   }
